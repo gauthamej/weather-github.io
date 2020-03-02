@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet"href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <script src="./code.js"></script>
+</head>
+<body>
+    <div class="container text-warning text-center pt-4">
+        <h1  >
+          Weather App
+        </h1>
+      </div>
+      <div
+      class="container pt-3 col-10"
+      style="border: 2px solid grey;border-radius:5px;background-color: lightgrey ;width :500px;box-shadow: black 2px 2px 5px; ">
+      <div class="row">
+        <div class="pl-3 pr-5" id="city"></div>
+        <div class="pl-5" id="country"></div>
+      </div>
+      <h3>Temperature:</h3>
+      <div class="row">
+        <div class="col-12" id="temp"style=" font-weight: bold;font-size: 60px;"></div>
+      </div>
+
+      <div class="container pb-3">
+        <div class="" id="humidity"></div>
+        <div class="" id="weather"></div>
+
+        <div class="" id="coord"></div>
+        <div class="" id="wind_speed"></div>
+      </div>
+      <div calss="row"><div id="time"></div></div>
+    </div>
+
+    <div class="container text-center pt-5">
+        <button class="btn btn-warning" onclick="location.reload()">
+          Find another
+        </button>
+      </div>
+
+<script>
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+        var y = this.responseText;
+          var array = JSON.parse(y);
+
+          console.log(array);
+          cloud = JSON.stringify(array.weather);
+          var clouds = JSON.parse(cloud);
+          var deg = array.main.temp - 273.15;
+          var degg = deg.toFixed(2);
+          document.getElementById("weather").innerHTML ="Weather: <b>" + clouds["0"]["main"];
+          document.getElementById("temp").innerHTML = degg + " &#176;C";
+          document.getElementById("humidity").innerHTML ="Humidity: <b>" + array.main.humidity + "%";
+          document.getElementById("wind_speed").innerHTML ="Wind Speed: <b>" + array.wind.speed + "km/h";
+          document.getElementById("country").innerHTML ="Country: <br><b>" +getCountryName(isoCountries[array.sys.country]);
+          document.getElementById("city").innerHTML ="City Name: <br><b>" + array.name;
+          document.getElementById("coord").innerHTML ="Co-ordinates: <b>longitude: " +array.coord.lon + " <b>latitude: " + array.coord.lat;
+          document.getElementById("time").innerHTML ="<b>" +new Date().toLocaleTimeString() +" &nbsp; &nbsp; &nbsp;   " + new Date().toLocaleDateString();
+          }
+};
+var x = prompt("Enter the city name: ");
+xhttp.open("GET", "https://api.openweathermap.org/data/2.5/weather?q=" +x+"&appid=c2c3a8c328b8822bda7f0660aadebda1",true);
+xhttp.send();
+</script>
+</body>
+</html>
